@@ -11,9 +11,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("files", nargs="+", help="Filename(s) of GPU-Z log files")
     parser.add_argument("--idle-clock", type=float, default="0", help="Trim start of graph to first row with clock speed above this value [MHz]")
-    parser.add_argument("--time", type=int, help="how many seconds of data to include in the graph")
-    parser.add_argument("--output", "-o", type=str, help="output files prefix")
-    parser.add_argument("--label", type=str, action="append", help="legend label for each input file, in order")
+    parser.add_argument("--time", type=int, help="How many seconds of data to include in the graph")
+    parser.add_argument("--output", "-o", type=str, help="Prefix of output files")
+    parser.add_argument("--label", type=str, action="append", help="Legend label for each input file, (repeated for each file in order)")
     args = parser.parse_args()
 
     if args.label and len(args.label) != len(args.files):
@@ -43,6 +43,7 @@ if __name__ == "__main__":
             dataframe[i] = pandas.to_numeric(dataframe[i], errors='coerce')
             label = args.label[j] if args.label else None
             pyplot.plot(dataframe[i].iloc[:args.time], label=label)
+            pyplot.title(i)
 
         pyplot.xlabel("Time [Seconds]")
         pyplot.ylabel(i.split("[")[1].split("]")[0])
