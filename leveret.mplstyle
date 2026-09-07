@@ -1,0 +1,15 @@
+lines.color: cad3f5
+text.color: cad3f5
+
+axes.facecolor: 1e2030
+axes.edgecolor: cad3f5
+axes.labelcolor: cad3f5
+axes.prop_cycle: cycler('color', ['f5a97f', 'c6a0f6'])
+
+xtick.color: cad3f5
+ytick.color: cad3f5
+
+grid.color: cad3f5
+
+figure.facecolor: 1e2030
+figure.edgecolor: 1e2030

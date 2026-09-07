@@ -12,8 +12,10 @@ if __name__ == "__main__":
     parser.add_argument("files", nargs="+", help="Filename(s) of GPU-Z log files")
     parser.add_argument("--idle-clock", type=float, default="0", help="Trim start of graph to first row with clock speed above this value [MHz]")
     parser.add_argument("--time", type=int, help="how many seconds of data to include in the graph")
-    parser.add_argument("--output", "-o", type=str, default="output files prefix")
+    parser.add_argument("--output", "-o", type=str, help="output files prefix")
     args = parser.parse_args()
+
+    pyplot.style.use('./leveret.mplstyle')
 
     prefix = f"{args.output}_" if args.output else ""
 
@@ -36,6 +38,10 @@ if __name__ == "__main__":
         for dataframe in data:
             dataframe[i] = pandas.to_numeric(dataframe[i], errors='coerce')
             pyplot.plot(dataframe[i].iloc[:args.time])
+
+        pyplot.xlabel("Time [Seconds]")
+        pyplot.ylabel(i.split("[")[1].split("]")[0])
+
         filename = f"{prefix}{i.strip()}.png".replace(" ", "_")
         pyplot.savefig(filename)
         pyplot.clf()
