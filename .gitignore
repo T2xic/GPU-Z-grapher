@@ -1,3 +1,4 @@
 *.txt
 *.png
 !requirements.txt
+!GPU_Temperature_[°C].png
