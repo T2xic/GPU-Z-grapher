@@ -13,7 +13,11 @@ if __name__ == "__main__":
     parser.add_argument("--idle-clock", type=float, default="0", help="Trim start of graph to first row with clock speed above this value [MHz]")
     parser.add_argument("--time", type=int, help="how many seconds of data to include in the graph")
     parser.add_argument("--output", "-o", type=str, help="output files prefix")
+    parser.add_argument("--label", type=str, action="append", help="legend label for each input file, in order")
     args = parser.parse_args()
+
+    if args.label and len(args.label) != len(args.files):
+        parser.error("--label must be specified one time per input file if adding graph labels")
 
     pyplot.style.use('./leveret.mplstyle')
 
@@ -35,12 +39,16 @@ if __name__ == "__main__":
         ]
 
     for i in tograph:
-        for dataframe in data:
+        for j, dataframe in enumerate(data):
             dataframe[i] = pandas.to_numeric(dataframe[i], errors='coerce')
-            pyplot.plot(dataframe[i].iloc[:args.time])
+            label = args.label[j] if args.label else None
+            pyplot.plot(dataframe[i].iloc[:args.time], label=label)
 
         pyplot.xlabel("Time [Seconds]")
         pyplot.ylabel(i.split("[")[1].split("]")[0])
+
+        if args.label:
+            pyplot.legend()
 
         filename = f"{prefix}{i.strip()}.png".replace(" ", "_")
         pyplot.savefig(filename)
